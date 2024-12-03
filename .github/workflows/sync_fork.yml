@@ -48,9 +48,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - env:
-          OUTPUT1: ${{needs.sync.outputs.run_build}}
-        run: echo "$OUTPUT1"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+  
+      - uses: actions/checkout@v4
+    
       - name: Unix timestamp tag
         id: unixts
         run: |
