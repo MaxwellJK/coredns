@@ -34,9 +34,8 @@ jobs:
             git fetch origin master
             git push origin HEAD:master
             echo "::set-output name=run_jobs::true"
-            else
-              echo "::set-output name=run_jobs::false"
-            fi
+          else
+            echo "::set-output name=run_jobs::false"
           fi
 
   build:
