@@ -42,12 +42,15 @@ jobs:
           fi
 
   build:
-    needs: [sync]
-    if: needs.sync.outputs.run_build == 'true'
+    needs: sync
+    # if: needs.sync.outputs.run_build == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - env:
+          OUTPUT1: ${{needs.sync.outputs.run_build}}
+        run: echo "$OUTPUT1"
       - name: Unix timestamp tag
         id: unixts
         run: |
