@@ -36,9 +36,9 @@ jobs:
             git commit -m "Auto adding mysql to plugin.cfg"
             git fetch origin master
             git push origin HEAD:master
-            echo "run_build=true" >> $GITHUB_OUTPUT
-          else
             echo "run_build=false" >> $GITHUB_OUTPUT
+          else
+            echo "run_build=true" >> $GITHUB_OUTPUT
           fi
 
   build:
