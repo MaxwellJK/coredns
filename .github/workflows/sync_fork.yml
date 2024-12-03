@@ -1,0 +1,33 @@
+name: sync-fork
+on:
+  schedule:
+    - cron: '0 5 * * MON'
+  workflow_dispatch: { }
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          BRANCH_NAME: ${{ github.ref_name }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.2
+        
+      - name: Run a one-line script
+        run: echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
+  
+      - name: check for changes
+        run: git status
+      - name: stage changed files
+        run: git add .
+      - name: commit changed files
+        run: git commit -m "Auto updating TODO.txt"
+      - name: fetch from master
+        run: git fetch origin master
+      - name: push code to master
+        run: git push origin HEAD:master
