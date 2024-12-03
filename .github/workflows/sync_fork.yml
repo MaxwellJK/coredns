@@ -21,6 +21,7 @@ jobs:
       - name: pull the latest code
         run: git pull
       - name: edit plugin.cfg and push
+        id: edit_n_push
         run: |
           if ! grep -q mysql plugin.cfg; then
             echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
@@ -33,14 +34,14 @@ jobs:
             git commit -m "Auto adding mysql to plugin.cfg"
             git fetch origin master
             git push origin HEAD:master
-            echo "::set-output name=run_jobs::true"
+            echo "run_build=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=run_jobs::false"
+            echo "run_build=false" >> $GITHUB_OUTPUT
           fi
 
   build:
     needs: [sync]
-    if: needs.sync.outputs.run_rest_jobs == 'true'
+    if: steps.edit_n_push.outputs.run_build == 'false'
     runs-on: ubuntu-latest
     permissions:
       contents: write
