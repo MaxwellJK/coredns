@@ -17,9 +17,14 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2.3.2
-        
-      - name: edit plugin.cfg
-        run: echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
+
+      - name: pull the latest code
+        run: git pull
+      - name: edit plugin.cfg if mysql is not there
+        run: |
+          if ! grep -q mysql plugin.cfg; then
+            echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
+          fi
       - name: check for changes
         run: git status
       - name: stage changed files
