@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      output1: ${{ steps.edit_n_push.outputs.run_build }}
     steps:
       - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
         env:
