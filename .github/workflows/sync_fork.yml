@@ -33,10 +33,19 @@ jobs:
             git commit -m "Auto adding mysql to plugin.cfg"
             git fetch origin master
             git push origin HEAD:master
-          else
-            exit 0
+            echo "::set-output name=run_jobs::true"
+            else
+              echo "::set-output name=run_jobs::false"
+            fi
           fi
 
+  build:
+    needs: [sync]
+    if: needs.sync.outputs.run_rest_jobs == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Unix timestamp tag
         id: unixts
         run: |
