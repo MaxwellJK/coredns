@@ -20,26 +20,22 @@ jobs:
 
       - name: pull the latest code
         run: git pull
-      - name: edit plugin.cfg if mysql is not there
+      - name: edit plugin.cfg and push
         run: |
           if ! grep -q mysql plugin.cfg; then
             echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
           fi
-      - name: check for changes
-        run: git status
-      - name: stage changed files
-        run: git add .
-      - name: commit changed files
-        run: |
-          git config user.email "marcofontana.ing@gmail.com"
-          git config user.name "MaxwellJK"
-          git commit -m "Auto adding mysql to plugin.cfg"
-      - name: fetch from master
-        run: git fetch origin master
-      - name: push code to master
-        run: git push origin HEAD:master
 
-
+          if [[ `git status --porcelain` ]]; then
+            git add .
+            git config user.email "marcofontana.ing@gmail.com"
+            git config user.name "MaxwellJK"
+            git commit -m "Auto adding mysql to plugin.cfg"
+            git fetch origin master
+            git push origin HEAD:master
+          else
+            exit 0
+          fi
 
       - name: Unix timestamp tag
         id: unixts
