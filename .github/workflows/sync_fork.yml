@@ -41,7 +41,7 @@ jobs:
 
   build:
     needs: [sync]
-    if: steps.edit_n_push.outputs.run_build == 'false'
+    if: sync.steps.edit_n_push.outputs.run_build == 'false'
     runs-on: ubuntu-latest
     permissions:
       contents: write
