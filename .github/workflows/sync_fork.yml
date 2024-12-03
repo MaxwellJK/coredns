@@ -43,7 +43,7 @@ jobs:
 
   build:
     needs: sync
-    # if: needs.sync.outputs.run_build == 'true'
+    if: ${{needs.sync.outputs.run_build}} == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
