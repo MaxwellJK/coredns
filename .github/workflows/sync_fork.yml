@@ -35,13 +35,15 @@ jobs:
             git fetch origin master
             git push origin HEAD:master
             echo "run_build=true" >> $GITHUB_OUTPUT
+            exit 0
           else
             echo "run_build=false" >> $GITHUB_OUTPUT
+            exit 1
           fi
 
   build:
     needs: [sync]
-    if: ${{ steps.edit_n_push.outputs.run_build == 'false' }}
+    if: github.event.client_payload.sync
     runs-on: ubuntu-latest
     permissions:
       contents: write
