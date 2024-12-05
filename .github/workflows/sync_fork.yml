@@ -49,6 +49,11 @@ jobs:
       contents: write
     steps:
 
+      - name: Build coredns
+        run: |
+          cd coredns
+          make
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       
