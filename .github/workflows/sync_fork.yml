@@ -91,8 +91,6 @@ jobs:
 
       - name: Build coredns
         run: |
-          ls
-          cd coredns
           make
 
       - name: Set up QEMU
