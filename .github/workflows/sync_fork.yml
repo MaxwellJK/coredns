@@ -54,18 +54,29 @@ jobs:
                                 # (but actions/checkout@v2 can also be instructed
                                 # to fetch all git depth right from the start)
 
-         git remote add upstream https://github.com/example/test.git
+         git remote add upstream https://github.com/coredns/coredns.git
          git fetch upstream
+         git checkout main
+         git rebase upstream/master
 
-         # Neither forget the -b opt,
-         # the feature/x ref is ambiguous at this stage
-         git checkout -b feature/x origin/feature/x
-         git merge --no-edit upstream/feature/x
-         git push origin feature/x
+      - name: edit plugin.cfg and push
+        id: edit_n_push
+        run: |
+          if ! grep -q mysql plugin.cfg; then
+            echo "mysql:github.com/cloud66-oss/coredns_mysql" >> plugin.cfg
+          fi
 
-         git checkout master
-         git merge --no-edit upstream/master
-         git push origin master
+          if [[ `git status --porcelain` ]]; then
+            git add .
+            git config user.email "marcofontana.ing@gmail.com"
+            git config user.name "MaxwellJK"
+            git commit -m "Auto adding mysql to plugin.cfg"
+            git fetch origin master
+            git push origin HEAD:master
+            echo "run_build='false'" >> $GITHUB_OUTPUT
+          else
+            echo "run_build='true'" >> $GITHUB_OUTPUT
+          fi
          
   build:
     needs: sync
