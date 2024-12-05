@@ -56,7 +56,7 @@ jobs:
 
          git remote add upstream https://github.com/coredns/coredns.git
          git fetch upstream
-         git checkout main
+         git checkout master
          git rebase upstream/master
 
       - name: edit plugin.cfg and push
