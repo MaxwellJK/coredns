@@ -14,8 +14,10 @@ jobs:
       - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          BRANCH_NAME: ${{ github.ref_name }}
+          # REPOSITORY: ${{ github.repository }}
+          # BRANCH_NAME: ${{ github.ref_name }}
+          REPOSITORY: coredns/coredns
+          BRANCH_NAME: master
 
       - name: Checkout repository
         uses: actions/checkout@v2.3.2
@@ -54,6 +56,7 @@ jobs:
 
       - name: Build coredns
         run: |
+          ls
           cd coredns
           make
 
