@@ -93,9 +93,7 @@ jobs:
           
       - name: Build coredns
         run: |
-          make
-          pwd
-          ls
+          docker run --rm -i -t -v $PWD:/go/src/github.com/coredns/coredns -w /go/src/github.com/coredns/coredns golang:1.22 sh -c 'GOFLAGS="-buildvcs=false" make gen && GOFLAGS="-buildvcs=false" make'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
