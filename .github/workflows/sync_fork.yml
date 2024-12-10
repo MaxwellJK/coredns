@@ -48,24 +48,28 @@ jobs:
         
       - name: Fetch and sync with upstream
         run: |
-         git config user.name "MaxwellJK"
-         git config user.email "marcofontana.ing@gmail.com"
-
-         git clone https://github.com/coredns/coredns.git coredns_coredns
-         git clone https://github.com/maxwelljk/coredns.git
-
-         cd coredns_coredns
-         remote_version=`make -f Makefile.release version`
-
-         cd ..
-         cd coredns
-         local_version=`make -f Makefile.release version`
-
-         if [[ $remote_version==$local_version ]]; then
-           echo "run_build='true'" >> $GITHUB_OUTPUT
-         else
-           echo "run_build='false'" >> $GITHUB_OUTPUT
-         fi
+          git config user.name "MaxwellJK"
+          git config user.email "marcofontana.ing@gmail.com"
+          
+          git clone https://github.com/coredns/coredns.git coredns_coredns
+          git clone https://github.com/maxwelljk/coredns.git
+          
+          cd coredns_coredns
+          remote_version=`make -f Makefile.release version`
+          
+          cd ..
+          rm -rf coredns_coredns
+          cd coredns
+          local_version=`make -f Makefile.release version`
+          
+          if [[ $remote_version==$local_version ]]; then
+            echo "run_build='true'" >> $GITHUB_OUTPUT
+            echo "new_tag=`echo $remote_version | cut -f2 -d v`" >> $GITHUB_OUTPUT
+          else
+            echo "run_build='false'" >> $GITHUB_OUTPUT
+            git checkout master
+            git rebase upstream/master
+          fi
           
   build:
     needs: sync
