@@ -10,6 +10,7 @@ jobs:
       contents: write
     outputs:
       run_build: ${{ steps.edit_n_push.outputs.run_build }}
+      new_tag: ${{ steps.edit_n_push.outputs.new_tag }}
     steps:
       # - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
       #   env:
