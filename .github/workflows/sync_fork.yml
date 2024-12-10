@@ -9,8 +9,8 @@ jobs:
     permissions:
       contents: write
     outputs:
-      run_build: ${{ steps.edit_n_push.outputs.run_build }}
-      new_tag: ${{ steps.edit_n_push.outputs.new_tag }}
+      run_build: ${{ steps.fetch_n_sync.outputs.run_build }}
+      new_tag: ${{ steps.fetch_n_sync.outputs.new_tag }}
     steps:
       # - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
       #   env:
@@ -48,6 +48,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
         
       - name: Fetch and sync with upstream
+        id: fetch_n_sync
         run: |
           git config user.name "MaxwellJK"
           git config user.email "marcofontana.ing@gmail.com"
