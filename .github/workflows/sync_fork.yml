@@ -49,6 +49,8 @@ jobs:
          git config user.email "marcofontana.ing@gmail.com"
 
          git clone https://github.com/coredns/coredns.git
+         cd coredns
+         
          remote_tag=`git ls-remote --sort='version:refname' --tags  https://github.com/coredns/coredns.git | tail --lines=1 | cut -f3 -d'/'`
          echo $remote_tag
          local_tag=`git describe --tags --abbrev=0`
