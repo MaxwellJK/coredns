@@ -42,12 +42,13 @@ jobs:
       #     else
       #       echo "run_build='true'" >> $GITHUB_OUTPUT
       #     fi
-      - uses: actions/checkout@v2
+      # - uses: actions/checkout@v2
       - name: Merge upstream
         run: |
          git config user.name "MaxwellJK"
          git config user.email "marcofontana.ing@gmail.com"
 
+         git clone https://github.com/coredns/coredns.git
          remote_tag=`git ls-remote --sort='version:refname' --tags  https://github.com/coredns/coredns.git | tail --lines=1 | cut -f3 -d'/'`
          echo $remote_tag
          local_tag=`git describe --tags --abbrev=0`
